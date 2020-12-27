@@ -1,0 +1,13 @@
+{% block body %}
+<form method="post" action="./registrarCitas">
+    <div class="form-group">
+        <label for="empresa">Empresas</label>
+        {% for empresa in empresa %}
+        <input type="radio" class="form-control" id="empresa" name="empresa" value="{{ empresa.id }}">{{ empresa.nombre }}<br>
+        {% endfor %}
+    </div>
+    <input type="submit" value="Siguiente">
+</form>
+{% endblock %}
+
+
