@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} - Dashboard
+{% endblock %}
+
+{% block body %}
+    {% include "comunes/_menu.html.twig" %}
+    {{ parent() }}
+    <div class="count">
+        <h5 class="col-form-label">Numero de Citas pendientes: {{ pagination.getTotalItemCount }}</h5>
+    </div>
+    <table class="table table-striped">
+        <tr>
+            {# sorting of properties based on query components #}
+            <th>{{ knp_pagination_sortable(pagination, 'Nombre', 'a.nombre') }}</th>
+            <th{% if pagination.isSorted('a.fecha') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'Fecha', 'a.fecha') }}
+            </th>
+            <th{% if pagination.isSorted(['a.date', 'a.time']) %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'Hora', ['a.date', 'a.time']) }}
+            </th>
+            <th></th>
+        </tr>
+
+        {# table body #}
+        {% for article in pagination %}
+            <tr {% if loop.index is odd %}class="color"{% endif %}>
+                <td>{{ article.nombre }}</td>
+                <td>{{ article.fecha | date('d-m-Y') }}</td>
+                <td>{{ article.hora | date('H:i:s') }}</td>
+                <td><a class="btn btn-danger ml-2" href="{{ path('eliminarCitas/{id}',{'id':article.id}) }}" type="buttom">Eliminar</a> </td>
+            </tr>
+        {% endfor %}
+    </table>
+    {# display navigation #}
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+{% endblock %}
